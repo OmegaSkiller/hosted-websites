@@ -136,7 +136,7 @@ export function SiteTable({ sites, onView, onEdit }: Props) {
             </TableHeader>
             <TableBody>
               {filtered.map((site) => {
-                const serverClass = getServerBadgeClasses(site.server_name);
+                const serverClass = getServerBadgeClasses(site.server_name || undefined);
                 const premium = isTruthyFlag(site.premium_hosting);
                 const cloudflare = isTruthyFlag(site.cloudflare);
                 const checkup = isTruthyFlag(site.checkup_done);

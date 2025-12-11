@@ -66,13 +66,13 @@ async function main() {
     return;
   }
 
-  const { error, count } = await supabase.from("sites").upsert(normalized, { onConflict: "url" }).select("*", { count: "exact" });
+  const { error, data } = await supabase.from("sites").upsert(normalized, { onConflict: "url" }).select("*");
   if (error) {
     console.error("Seed failed:", error.message);
     process.exit(1);
   }
 
-  console.log(`Seeded ${count ?? normalized.length} records into sites.`);
+  console.log(`Seeded ${data?.length ?? normalized.length} records into sites.`);
 }
 
 main().catch((err) => {

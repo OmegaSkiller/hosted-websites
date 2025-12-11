@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { siteCreateSchema, SiteCreateInput } from "@/lib/validation/site";
+import { siteCreateSchema, type SiteCreateInput, type SiteFormValues } from "@/lib/validation/site";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,19 +9,19 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { cn, isTruthyFlag } from "@/lib/utils";
 
 type Props = {
-  defaultValues?: Partial<SiteCreateInput>;
+  defaultValues?: Partial<SiteFormValues>;
   onSubmit: (values: SiteCreateInput) => Promise<void>;
   submitting: boolean;
 };
 
 export function SiteForm({ defaultValues, onSubmit, submitting }: Props) {
-  const form = useForm<SiteCreateInput>({
+  const form = useForm<SiteFormValues>({
     resolver: zodResolver(siteCreateSchema),
-    defaultValues: defaultValues as SiteCreateInput,
+    defaultValues,
   });
 
   useEffect(() => {
-    form.reset(defaultValues as SiteCreateInput);
+    form.reset(defaultValues);
   }, [defaultValues, form]);
 
   useEffect(() => {
@@ -88,7 +88,8 @@ export function SiteForm({ defaultValues, onSubmit, submitting }: Props) {
     <form
       className="grid grid-cols-1 gap-4 md:grid-cols-2"
       onSubmit={form.handleSubmit(async (values) => {
-        await onSubmit(values);
+        const parsed = siteCreateSchema.parse(values);
+        await onSubmit(parsed);
       })}
     >
       <div className="space-y-2 md:col-span-2">

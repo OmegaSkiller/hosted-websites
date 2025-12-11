@@ -39,6 +39,7 @@ export const siteCreateSchema = siteBaseSchema;
 
 export const siteUpdateSchema = siteBaseSchema.partial();
 
-export type SiteCreateInput = z.infer<typeof siteCreateSchema>;
+export type SiteFormValues = z.input<typeof siteCreateSchema>;
+export type SiteCreateInput = z.output<typeof siteCreateSchema>;
 export type SiteUpdateInput = z.infer<typeof siteUpdateSchema>;
 
